@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scripts
+data:
+  run.sh: |
+    echo $START_MESSAGE
+    for i in `seq 1 10`
+    do
+        echo "$ITEM_MESSAGE $i"
+        sleep 2
+    done
+    echo $END_MESSAGE

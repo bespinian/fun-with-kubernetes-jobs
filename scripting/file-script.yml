@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: file-script
+spec:
+  template:
+    spec:
+      containers:
+        - command: ["/bin/sh"]
+          args:
+            - -c
+            - |
+              /scripts/run.sh
+          image: busybox
+          name: single
+          volumeMounts:
+            - name: scripts
+              mountPath: "/scripts"
+              readOnly: true
+          env:
+            - name: START_MESSAGE
+              value: Job starting ...
+            - name: END_MESSAGE
+              value: ... job done
+            - name: ITEM_MESSAGE
+              value: Processing item number
+      restartPolicy: Never
+      volumes:
+        - name: scripts
+          configMap:
+            name: scripts
+            defaultMode: 0744
