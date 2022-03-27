@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mutliple-execution-parallel
+spec:
+  template:
+    spec:
+      containers:
+        - command: ["/bin/sh"]
+          args:
+            - -c
+            - |
+              echo "Job $(JOB_COMPLETION_INDEX) starting ..."
+              sleep 10
+              echo "... job done"
+          image: busybox
+          name: multiple
+      restartPolicy: Never
+  completions: 6
+  completionMode: Indexed
+  parallelism: 3

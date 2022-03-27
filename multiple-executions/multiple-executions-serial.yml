@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mutliple-execution-serial
+spec:
+  template:
+    spec:
+      containers:
+        - command: ["/bin/sh"]
+          args:
+            - -c
+            - |
+              echo "Job starting ..."
+              sleep 10
+              echo "... job done"
+          image: busybox
+          name: multiple
+      restartPolicy: Never
+  completions: 3

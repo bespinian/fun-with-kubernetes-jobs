@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: retries
+spec:
+  template:
+    spec:
+      containers:
+        - command: ["/bin/sh"]
+          args:
+            - -c
+            - |
+              sleep 2
+              echo 'hello there target!' | nc -v target 2345
+          image: busybox
+          name: single
+      restartPolicy: Never
