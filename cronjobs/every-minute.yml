@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: every-minute
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - command: ["/bin/sh"]
+              args:
+                - -c
+                - |
+                  echo "Job starting ..."
+                  sleep 10
+                  echo "... job done"
+              image: busybox
+              name: single
+          restartPolicy: Never
