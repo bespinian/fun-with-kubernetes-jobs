@@ -27,3 +27,66 @@ Look at the log of job execution
 ```watch
 kubectl logs $(kubectl get pod -l job-name=single-execution -o jsonpath={'.items[0].metadata.name'})
 ```
+
+Clean up the job by executing
+
+```shell
+kubectl delete -f ./single-execution
+```
+
+## Multiple execution jobs
+
+Jobs can also have multiple executions. This can be achieved by setting the `completions` attribute to the desired number of executions.
+
+### Serial executions
+
+By default all executions of a job run one after the other. Take a look at [./multiple-executions/multiple-executions-serial.yml](./multiple-executions/multiple-executions-serial.yml) for an example of such a job. You can run it with
+
+```shell
+kubectl apply -f ./multiple-executions/multiple-executions-serial.yml
+```
+
+and observe the three pods running to completion in sequence
+
+```shell
+watch -n 0.5 "kubectl get pods"
+```
+
+### Indexed execution
+
+Sometimes each individual execution needs to know it's index in the sequence of all executions. This can be achieved by setting the `completionMode` attribute to `Indexed`. With this setting the job's containers get an environment variable named `JOB_COMPLETION_INDEX` from which they can read their index. Indexed execution is useful, for example, for determining the segment of data which a particular execution needs to operate on. Take a look at [./multiple-executions/multiple-executions-serial-indexed.yml](./multiple-executions/multiple-executions-serial-indexed.yml) for an example of such a job. You can run it with
+
+```shell
+kubectl apply -f ./multiple-executions/multiple-executions-serial-indexed.yml
+```
+
+and observe the three pods running to completion in sequence
+
+```shell
+watch -n 0.5 "kubectl get pods"
+```
+
+Now check the logs of each execution's pod
+
+```shell
+kubectl logs $(kubectl get pod -l job-name=mutliple-execution-serial-indexed -o jsonpath={'.items[0].metadata.name'})
+kubectl logs $(kubectl get pod -l job-name=mutliple-execution-serial-indexed -o jsonpath={'.items[1].metadata.name'})
+kubectl logs $(kubectl get pod -l job-name=mutliple-execution-serial-indexed -o jsonpath={'.items[2].metadata.name'})
+```
+
+### Parallel executions
+
+Job can also run their executions in parallel. This is achieved by setting the `parallelism` attribute to a number less than or equal to the number of `completions`. Using these two attributes, jobs can be configured to run all of their executions in parallel or only some. Take a look at [./multiple-executions/multiple-executions-parallel-full.yml](./multiple-executions/multiple-executions-parallel-full.yml) for an example of a job where all executions run in parallel. Take a look at [./multiple-executions/multiple-executions-parallel-partial.yml](./multiple-executions/multiple-executions-parallel-partial.yml) for a job where some but not all executions run in parallel. Run them with
+
+```shell
+kubectl apply -f ./multiple-executions/multiple-executions-parallel-full.yml
+kubectl apply -f ./multiple-executions/multiple-executions-parallel-partial.yml
+```
+
+and observe the pods being scheduled for both jobs.
+
+Clean up the example jobs after you are finished
+
+```shell
+kubectl delete -f ./multiple-executions
+```
