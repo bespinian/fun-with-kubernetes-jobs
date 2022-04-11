@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: mutliple-execution-serial-indexed
+  name: multiple-execution-serial-indexed
 spec:
   template:
     spec:

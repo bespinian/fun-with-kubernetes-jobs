@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: mutliple-execution-parallel
+  name: multiple-execution-parallel
 spec:
   template:
     spec:

@@ -69,9 +69,9 @@ watch -n 0.5 "kubectl get pods"
 Now check the logs of each execution's pod
 
 ```shell
-kubectl logs $(kubectl get pod -l job-name=mutliple-execution-serial-indexed -o jsonpath={'.items[0].metadata.name'})
-kubectl logs $(kubectl get pod -l job-name=mutliple-execution-serial-indexed -o jsonpath={'.items[1].metadata.name'})
-kubectl logs $(kubectl get pod -l job-name=mutliple-execution-serial-indexed -o jsonpath={'.items[2].metadata.name'})
+kubectl logs $(kubectl get pod -l job-name=multiple-execution-serial-indexed -o jsonpath={'.items[0].metadata.name'})
+kubectl logs $(kubectl get pod -l job-name=multiple-execution-serial-indexed -o jsonpath={'.items[1].metadata.name'})
+kubectl logs $(kubectl get pod -l job-name=multiple-execution-serial-indexed -o jsonpath={'.items[2].metadata.name'})
 ```
 
 ### Parallel executions
