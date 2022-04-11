@@ -90,3 +90,23 @@ Clean up the example jobs after you are finished
 ```shell
 kubectl delete -f ./multiple-executions
 ```
+
+## Retries
+
+Jobs do not need to implement retry logic themselves. Instead, they should just ensure that a non-zero exit code is returned of they run into a problem and should be restarted again at a later time. The Job resource will ensure that such retries are performed a configurable number of times and with a suitable back-off time. Take a look at [./retries/target-deployment.yml](./retries/target-deployment.yml) for a dummy application which takes a long time to get ready. The job in [./retries/retries.yml](./retries/retries.yml) will fail while the application is not yet ready and will be automatically restarted until it eventually succeeds. Run the setup with
+
+```shell
+kubectl apply -f ./retries
+```
+
+and observe the retry behavior by looking at the job's pods
+
+```shell
+watch -n 0.5 "kubectl get pods"
+```
+
+Clean up the example jobs after you are finished
+
+```shell
+kubectl delete -f ./retries
+```
