@@ -10,13 +10,13 @@ spec:
           args:
             - -c
             - |
-              echo $(START_MESSAGE)
+              echo $START_MESSAGE
               for i in `seq 1 10`
               do
-                  echo "$(ITEM_MESSAGE) $i"
+                  echo "$ITEM_MESSAGE $i"
                   sleep 2
               done
-              echo $(END_MESSAGE)
+              echo $END_MESSAGE
           image: busybox
           name: single
           env:
