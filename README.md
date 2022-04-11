@@ -130,3 +130,31 @@ The Job "update-attempt" is invalid: spec.template: Invalid value: core.PodTempl
 ```
 
 due to the immutability of the job.
+
+Clean up the example jobs after you are finished
+
+```shell
+kubectl delete -f ./immutability
+```
+
+## CronJobs
+
+If jobs need to be executed on a regular basis, you can use a `CronJob` resource. It will essentially take a cron-expression and a job template as input and create a job whenever the cron expression mandates it. Take a look at [./cronjobs/every-minute.yml](./cronjobs/every-minute.yml) for an example of this. You can run it using
+
+```shell
+kubectl apply -f ./cronjobs/every-minute.yml
+```
+
+Now you can run
+
+```shell
+watch -n 0.5 "kubectl get jobs"
+```
+
+and observe that a new job is being created every minute.
+
+Clean up the example after you are finished
+
+```shell
+kubectl delete -f ./cronjobs
+```
