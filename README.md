@@ -110,3 +110,23 @@ Clean up the example jobs after you are finished
 ```shell
 kubectl delete -f ./retries
 ```
+
+## Scripting
+
+Often, jobs will be made up of a shell script running in a general purpose container. Such scripts can be included inline in the job resource using a multi-line string for the script. The script can use environment variables which are set at runtime of the container. Take a look at [./scripting/inline-script.yml](./scripting/inline-script.yml) for an example of such a job. Sometimes, especially if a large script is involved, it is cleaner to mount the script as a file from a ConfigMap. Take a look at [./scripting/file-script.yml](./scripting/file-script.yml) for an example of such a job.
+
+## Immutability
+
+Jobs are defined to run to completion in a pre-defined number of executions. Due to these semantics, changing a jobs definition after it has been created does not make sense, since it would not be clear what to do about already completed executions. For this reason, jobs are immutable. You can test this by creating an example job
+
+```shell
+kubectl apply -f ./immutability/update-attempt.yml
+```
+
+and then trying to change a line in the script of the job. You will see an error of the form
+
+```
+The Job "update-attempt" is invalid: spec.template: Invalid value: core.PodTemplateSpec{ ... }: field is immutable
+```
+
+due to the immutability of the job.
