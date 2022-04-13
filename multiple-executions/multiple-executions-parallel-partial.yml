@@ -10,7 +10,7 @@ spec:
           args:
             - -c
             - |
-              echo "Job $(JOB_COMPLETION_INDEX) starting ..."
+              echo "Job $JOB_COMPLETION_INDEX starting ..."
               sleep 10
               echo "... job done"
           image: busybox
